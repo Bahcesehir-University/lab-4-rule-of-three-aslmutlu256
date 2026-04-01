@@ -66,6 +66,10 @@ public:
         //   2. Calculate length of input using strlen()
         //   3. Allocate m_data with new char[m_length + 1]
         //   4. Copy input into m_data using strcpy()
+        g_constructorCount++;
+        m_length=strlen(input);
+        m_data= new char[m_length + 1];
+        strcpy( m_data,input);
     }
 
     // --------------------------------------------------
@@ -75,8 +79,10 @@ public:
     // - Increment g_destructorCount
     ~DynamicBuffer() {
         // TODO: Implement destructor
-        //   1. Increment g_destructorCount
+        //   1. Increment  g_constructorCount
+        g_destructorCount++;
         //   2. Delete the dynamically allocated array (delete[])
+        delete[]m_data;
     }
 
     // --------------------------------------------------
@@ -91,6 +97,10 @@ public:
         //   2. Copy m_length from other
         //   3. Allocate new memory: new char[m_length + 1]
         //   4. Copy string data using strcpy()
+     g_copyConstructorCount++;
+       m_length = other.m_length;
+    m_data = new char[m_length + 1]; 
+    strcpy(m_data, other.m_data);
     }
 
     // --------------------------------------------------
@@ -104,12 +114,20 @@ public:
     DynamicBuffer& operator=(const DynamicBuffer& other) {
         // TODO: Implement copy assignment operator
         //   1. Increment g_assignmentCount
+        g_assignmentCount++;
         //   2. Check for self-assignment (if this == &other)
+        if( this == &other)
+         return *this;
         //   3. Delete old m_data (delete[])
+         delete[]m_data;
         //   4. Copy m_length from other
+       
         //   5. Allocate new memory: new char[m_length + 1]
         //   6. Copy string data using strcpy()
         //   7. Return *this
+         m_length = other.m_length;
+         m_data = new char[m_length + 1]; 
+         strcpy(m_data, other.m_data);
         return *this;
     }
 
@@ -128,9 +146,13 @@ public:
     void setData(const char* newData) {
         // TODO: Implement setData
         //   1. Delete old m_data (delete[])
+        delete[] m_data;
         //   2. Calculate new length with strlen()
         //   3. Allocate new memory: new char[m_length + 1]
         //   4. Copy newData into m_data using strcpy()
+        m_length = strlen(newData);
+        m_data=new char[m_length + 1];
+         strcpy(m_data,newData );
     }
 
     // --------------------------------------------------
